@@ -1,0 +1,21 @@
+字符串
+1. 由于字符串是不可变序列，不能直接对字符串对象进行元素增加，修改与删除，切片操作也只能访问其中的元素而无法修改字符。
+2.字符串格式化（详细需要查）
+	>>>x=12234
+	>>>print('the number is %s'x)
+	the number is 1234
+  format()方法对字符串格式化
+	>>>print('{0:.3f}'.format(1/3))
+	0.333		#保留三位小数
+	>>>print("my name is {name} age is {age} qq is {qq}".format(name='dong',qq='1231241',age=19))
+	my name is dong age is 19 qq is 1231241
+
+
+  Template模板进行格式化输出
+	>>>from string import Template 
+	>>>t=Template('my name is {name} age is {age} qq is {qq}')
+	>>>d={'name':'dong','age':19,'qq':'2314112'}
+	>>>t.substitute(d)
+	'my name is {name} age is {age} qq is {qq}'
+
+	
