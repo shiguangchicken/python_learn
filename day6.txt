@@ -10,3 +10,46 @@
 	fullmatch()
 	escape()将字符串中所有特殊正则表达式字符转义
 	complie()
+文件内容操作：
+	open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)
+	
+	with
+		:读写文件优先考虑使用上下文管理语句with，它可以自动管理资源，不论代码什么原因，哪怕是异常跳出with块，总能保证文件被正确关闭
+	with open(filename,mode,encoding) as fp:
+	
+	例子：
+	s=''
+	with open('a.txt','r') as fp:
+	    for line in fp:		#fp对象支持迭代，表示读取每一行的内容
+		s+=line
+2.json库
+	import json
+	with open('a.txt','w') as fp:
+		json.dump({'a':1,'b':2,'c':3},fp) #直接写入json数据
+	with open('a.txt','r') as fp:
+    		print(json.load(fp))		#将文件对象转换为json字符
+3.csv库
+	https://docs.python.org/3/library/csv.html?highlight=csv
+	详细介绍：https://source.opennews.org/articles/eleven-awesome-things-you-can-do-csvkit/
+	支持excel操作
+4.fileinput :同时显示多个文本文件的内容
+5.linecache 访问文本文件中制定行的内容
+
+6.二进制文件读写
+	pickle模块
+	
+	struct模块
+	
+	shelve模块
+	
+	marshal模块
+	
+	openpyxl读写Excel2007以及更高版本文件
+
+	python-docx读写Word2007以及更高版本
+
+	zipfile:查看指定zip，rar压缩文件中的文件列表,压缩解压文件
+
+	tarfile：python标准库，压缩文件
+	
+	pdfminer3k:pdf文件操作
