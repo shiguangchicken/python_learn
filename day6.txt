@@ -1,0 +1,12 @@
+正则匹配：
+	import re
+	split()分割字符串
+	findall()寻找所有匹配字符
+	finditer()
+	sub()替换字符
+	subn()替换字符，返回替换后的字符串以及替换次数的二元组
+	search()
+	match()
+	fullmatch()
+	escape()将字符串中所有特殊正则表达式字符转义
+	complie()
