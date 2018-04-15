@@ -1,0 +1,99 @@
+字典
+    dict
+    1.创建与删除
+        >>>x={i:j for i,j in zip(range(1,5),['a','b','c','d'])}
+        {1: 'a', 2: 'b', 3: 'c', 4: 'd'}
+    2.元素访问
+        >>>x={1: 'a', 2: 'b', 3: 'c', 4: 'd'}
+        >>>x[1]
+        'a'
+
+        get()方法
+        >>>x.get(2,'none')   #有键时返回对应元素
+        'b'
+        >>>x.get('2','none')  #没有键时返回设定值
+        'none'
+        setdefault()方法：返回给定键对应的值，如果没有键，添加一个新元素，默认值是None
+        >>>x.setdefault('2')
+        >>>x
+        {1: 'a', 2: 'b', 3: 'c', 4: 'd', '2': None}
+    3.添加、修改、删除
+        >>>x={'dog':15,'cat':9,'bird':17}
+        >>>x['dog']=18           #对元素进行修改
+        >>>x['chicken']=24       #没有键时相当于添加元素
+        {'dog': 18, 'cat': 9, 'bird': 17, 'chicken': 24}
+
+        update()
+
+    OrderedDict类：字典dict是无序的，如果需要记住元素插入的顺序，可以使用collection.OrderedDict。
+
+
+集合
+    set
+    >>>a={3,5}  #集合是无序可变序列，元素之间不允许重复
+
+    1.集合元素的增加与删除
+        add() 方法可以新增元素
+        update()方法可以合并另外一个集合到当前集合
+        pop()方法随机删除并返回集合中的元素
+        remove()方法删除集合中的元素，不存在元素时抛出异常
+            >>>a.remove('x')
+        discard() 和remove相同，不存在元素时忽略该操作
+        clear() 清空集合
+    2.集合运算
+       len() , max(), min(), sum(), sort(), map(), filter(), enumerate()
+       还支持
+
+       a|b  #集合a与集合b的并集
+       a.union(b)  #集合a与集合b的并集
+       a&b  #集合a与集合b的并集
+       a.intersection(b)  #集合a与集合b的并集
+       a.difference(b)   #差集
+       a-b   #差集
+       a.symmetric_difference(b) #对称差
+       a<b         #a是否是b的真子集
+       a<=b         #子集
+       a.issubset() #子集
+       a.isdisjoint(b) #a，b交集为空，返回True
+
+    3.不可变集合frozenset :不支持add(),remove()等修改集合的方法
+
+    4.list,tuple,dict,set 查找的快慢比较
+        import time
+        import random
+        x1=list(range(10000))
+        x2=tuple(range(10000))
+        x3=dict(zip(range(10000),range(10000)))
+        x4=set(range(10000))
+        r=random.randint(0,9999)
+        print("beagin:\n")
+        for t in (x1,x2,x3,x4):
+            start=time.time()
+            for i in range(999999):
+                r in t
+            print(type(t),'time used:',time.time()-start)
+        print("\nend")
+        _____________________________
+        beagin:
+
+        <class 'list'> time used: 39.726027488708496
+        <class 'tuple'> time used: 38.64285159111023
+        <class 'dict'> time used: 0.12396359443664551
+        <class 'set'> time used: 0.12794089317321777
+
+        end
+    5. 需要生成一定范围内一定数量的不重复数字
+        random.sample()
+        >>>import random
+        >>>random.sample(range(1000),20)
+        [364, 754, 393, 833, 798, 580, 385, 447, 838, 178, 318, 605, 180, 145, 41, 285, 919, 685, 298, 271]
+
+序列解包的多种用法：
+    >>>x,y,z=1,2,3   #多个变量同时赋值
+    >>>x,y,z=range(3)   #多个变量同时赋值(x=0,y=1,z=2)
+    >>>x,y,z=[1,2,3]  # x=1,y=2,z=3
+    >>>s={'a': 1, 'b': 2, 'c': 3}
+    >>>x,y,z=s.items()
+    >>>x
+    ('a', 1)
+

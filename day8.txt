@@ -1,0 +1,103 @@
+文件与文件夹
+    os模块：
+常用方法：
+    access(path,mode)：测试是否可以按照mode指定的权限访问文件
+    chdir(path):把path设为当前工作目录
+    chmod(path,mode,*,dir_fd=None,follow_symlinks=True):改变文件的访问权限
+    curdir:当前文件夹
+    environ:包含系统环境变量和值的字典
+    extsep:当前操作系统所使用的文件扩展名分隔符
+    get_exec_path()返回可执行文件的搜索路径:['/usr/local/bin', '/usr/bin', '/bin', '/usr/local/games', '/usr/games', '/sbin', '/usr/sbin']
+    getcwd():返回当前工作目录
+    listdir(path):返回path下的文件和目录列表
+    mkdir(path,mode=0777):创建目录，要求上级目录必须存在
+    makedirs(path1/path2...,mode=511):创建多级目录
+    open():按mode指定的权限打开文件，默认为可读可写可执行
+    popen():创建进程，启动外部程序
+    rmdir(path):删除目录
+    remove(path):删除指定的文件
+    removedirs():删除多级目录
+    rename(src,dst):重命名文件或目录
+    replace():重命名文件或目录，若文件已存在，直接覆盖
+    scandir():返回指定文件夹中所有的Direntry对象
+    stat(path):返回文件的所有属性
+    walk():遍历目录树
+    write(fd,dataa):将bytes对象data写入文件fd
+2.遍历指定目录下所有文件，使用递归方法
+    1 深度优先
+        from os import listdir
+        from os.path import join,isfile,isdir
+        def listDirDepthFirst(directory):
+            '''深度优先遍历文件夹'''
+            #遍历文件夹，如果是文件就直接输出
+            #如果是文件夹，就输出显示然后递归遍历该文件夹
+            for subPath in listdir(directory):
+                path=join(directory,subPath)
+                if isfile(path):
+                    print(path)
+                elif isdir(path):
+                    print(path)
+                    listDirDepthFirst(path)
+    2.广度优先
+
+        def listDirWidthFirst(directory):
+            '''广度优先遍历文件夹'''
+            #使用列表模拟双端队列，效率稍微受影响，不过关系不大
+            dirs=[directory]
+            #如果还没有遍历过的文件夹，继续循环
+            while dirs:
+                #遍历还没有遍历过的第一项
+                current=dirs.pop(0)
+                #遍历该文件夹，如果是文件就直接输出现实
+                #如果是文件夹，输出显示后标记为待遍历
+                for subpath in listdir(current):
+                    path=join(current,subpath)
+                    if isfile(path):
+                        print(path)
+                    elif isdir(path):
+                        print(path)
+                        dirs.append(path)
+    3.使用walk()方法遍历
+
+        def listPathWalk(directroy):
+            listdirs=os.walk(directroy)
+            for root,dirs,file in listdirs:
+                for d in dirs:
+                    print(join(root,d))
+                for f in file:
+                    print(join(root,f))
+3.os.path模块
+    abspath(path):绝对路径
+    exist(path):判断文件是否存在
+    isdir()
+    isabs()
+    isfile()
+    join(path,*paths)
+    relpath(path)相对路径
+
+4.shutil模块
+    copy()复制文件和属性
+    copy2()：复制文件，所有属于一样（包括创建时间，修改时间，最后访问时间等）
+    copyfile()复制文件，不复制属性
+    copytree()递归复制文件夹
+    move()移动文件或递归移动文件夹，也可以重命名
+    rmtree()递归删除文件夹
+
+
+ 异常处理：
+    在使用异常处理结构捕获和处理异常时，应尽量具体一点，最好明确指定要捕获和处理的哪一类，尽量避免捕获Exception或BaseException类
+    try:
+        #可能引发异常的代码
+    except Exceeption(as reason):
+        #执行异常代码
+    else:
+        #如果try中代码没有引发异常，就继续执行这里的代码
+
+
+    try:
+        #可能引发异常的代码
+    except Exceeption(as reason):
+        #执行异常代码
+    finally:
+        #不管try中代码是否异常，也不管except语句是否捕获异常，都会执行finally语句
+

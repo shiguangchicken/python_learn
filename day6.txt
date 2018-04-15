@@ -1,55 +1,39 @@
-正则匹配：
-	import re
-	split()分割字符串
-	findall()寻找所有匹配字符
-	finditer()
-	sub()替换字符
-	subn()替换字符，返回替换后的字符串以及替换次数的二元组
-	search()
-	match()
-	fullmatch()
-	escape()将字符串中所有特殊正则表达式字符转义
-	complie()
-文件内容操作：
-	open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)
-	
-	with
-		:读写文件优先考虑使用上下文管理语句with，它可以自动管理资源，不论代码什么原因，哪怕是异常跳出with块，总能保证文件被正确关闭
-	with open(filename,mode,encoding) as fp:
-	
-	例子：
-	s=''
-	with open('a.txt','r') as fp:
-	    for line in fp:		#fp对象支持迭代，表示读取每一行的内容
-		s+=line
-2.json库
-	import json
-	with open('a.txt','w') as fp:
-		json.dump({'a':1,'b':2,'c':3},fp) #直接写入json数据
-	with open('a.txt','r') as fp:
-    		print(json.load(fp))		#将文件对象转换为json字符
-3.csv库
-	https://docs.python.org/3/library/csv.html?highlight=csv
-	详细介绍：https://source.opennews.org/articles/eleven-awesome-things-you-can-do-csvkit/
-	支持excel操作
-4.fileinput :同时显示多个文本文件的内容
-5.linecache 访问文本文件中制定行的内容
+1.类的定义
+    class Car(vehicle):
+        segement
+    定义类Car继承vehicle
 
-6.二进制文件读写
-	pickle模块
-	
-	struct模块
-	
-	shelve模块
-	
-	marshal模块
-	
-	openpyxl读写Excel2007以及更高版本文件
+    实例化对象
+    car=Car()
+    python 提供关键字pass，表示空语句
+2. type类
+    type是特殊的类，可以看成是所有类型（包括object）的基类。
+    __class__成员可以查看其所属的类
+    __bases__返回包含该类所有基类的元组
+    __subclasses__()可以返回该类型的所有子类
+    构造方法
+    def __init__(self,value1=0,value2=0):
+        self._value1=value1
+        self.__value2=value2  #私有成员
+    在类中，以两个或更多下划线开头但不以两个或更多下划线结尾的成员绑定到对象时，都会绑定为
+       对象名._类名.__成员名类似的形式
+    class Demo():
+        def __new__():
+            pass        #该方法在init之前调用
 
-	python-docx读写Word2007以及更高版本
+        def __init__(self,v):
+            self.___value=v
+            pass
+    d=Demo(3)
+    d._Demo.___value      #3
 
-	zipfile:查看指定zip，rar压缩文件中的文件列表,压缩解压文件
+    _x:一个下划线开头，保护成员（protected）
+    __x:两个或更多下划线开头，私有成员
+    __x__:前后    各两个下划线，系统定义的特殊成员
 
-	tarfile：python标准库，压缩文件
-	
-	pdfminer3k:pdf文件操作
+3.公有方法、私有方法、抽象方法
+    私有方法以两个或更多下划线开头
+    所有方法都必须至少有一个以self为名的参数，并且必须是方法的第一个形参，self代表当前对象
+    代码保存在class_intro.py中
+
+4.属性

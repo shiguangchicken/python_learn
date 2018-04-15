@@ -1,0 +1,39 @@
+多任务与并行处理
+1.线程概念与标准库threading
+    磁盘上的应用程序文件被打开并执行时，创建一个进程，但进程并不是可执行单元，不执行任何东西，主要做线程和相关资源的容器。
+    线程是操作系统调度的基本单位，负责执行包含地址空间中的代码并访问其中资源。当一个进程被创建时，操作系统会自动为之建立一个线程，通常称之为主线程。、
+
+    threading标准库：
+        active_count()、activeCount():返回处于alive状态下的Thread对象数量
+        current_thread()、currentThread()：返回当前Thread对象
+        get_ident():返回当前线程的线程标识符
+        enumerate():返回处于alive状态的所有Thread对象列表
+        local:线程局部数据类
+        main_thread:返回主线程对象
+        Tread：线程类
+        Event：事件类
+        Condition：条件类
+        Lock、RLock：锁类h结束或超时返回
+
+2.线程对象
+    start():自动调用run()方法，启动线程，执行代码
+    run()：
+    __init__(self,group=None,target=):构造方法
+    name:读取或设置线程的名字
+    ident:线程标识，非0数字
+    is_alive() isAlive()测试线程是否处于alive状态
+    daemon:布尔值，是否为守护线程
+    join(time=None):等待线程
+3.threading.Lock
+    线程锁：详细参考https://www.cnblogs.com/alan-babyblog/p/5335035.html
+
+4.Condition对象
+    wait(timeout=None):释放锁，并阻塞当前线程直到超时或其他线程调用notify()
+    wait_for(predicate,timeout=None):阻塞当前线程直到超时或条件得到满足
+    notify(n=1)：唤醒等待condition对象的一个或多个线程
+    notify_all()唤醒等待Condition对象的所有线程
+    多线程案例在multy_thread.py文件中
+5.Queue模块
+    queue模块是线程安全的，不需要额外的同步机制，尤其适合需要多个线程之间进行信息交换的场合
+    get()
+    put()

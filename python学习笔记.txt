@@ -18,4 +18,61 @@
 	>>>t.substitute(d)
 	'my name is {name} age is {age} qq is {qq}'
 
-	
+3.字符串常用操作
+    find(),rfind()：分别用来查找一个字符串在另一个字符串指定范围（默认是整个字符串）中首次和最后一次出现的位置，如果不存在，返回-1；
+    index(),rindex()方法用来返回一个字符串在另一个字符穿指定范围中首次和最后一次出现的位置，如果不存在，则抛出异常；
+    count()方法用来返回一个字符串在另一个字符串中出现的次数，如果不存在，则返回0
+    split()、rsplit()
+    join() 用来将多个字符串进行连接，并在相邻两个字符串之间插入指定字符，返回新的字符串
+    >>>li=['apple','peach','banana','pear']
+    >>>sep=','
+    >>>sep.join(li)
+    'apple,peach,banana,pear'
+    split()和join()可以删除字符串中多余的空白字符，如果有连续多个空白字符，只保留一个
+    x='aaa    vvc   sdasd   fff'
+    ' '.join(x.split())
+    #返回结果'aaa vvc sdasd fff'
+
+
+    lower()、upper() 转换大小写
+    capitalize() 字符串首字母大写
+    title() 每个单词首字母大写
+    swapcase() 大小写互换
+
+
+    replace()用来替换字符串中指定字符或子字符串的所有重复出现，每次只能替换一个字符或字符串
+    >>>s='中国，中国'
+    >>>print(s.replace('中国','中华人民共和国'))
+    中华人民共和国，中华人民共和国
+
+
+    maketrans()用来生成字符映射表
+    translate()用来根据映射表中定义的关系转换字符串并替换其中字符
+        example：将'abcdef123'一一对应转换为'uvwxyz@#*'
+    >>>table=''.maketrans('abcdef123','uvwxyz@#*')
+    >>>s='Python is a greate progranmming language. I like it!'
+    >>>s.translate(table)
+    'Python is u gryuty progrunmming lunguugy. I liky it!'
+
+    strip()、rstrip()、lstrip()分别用来删除两端、右端、左端连续的空白字符或指定字符
+
+    startwith() endwith()判断字符串是否以指定字符开始
+
+    isalnum() isalpha() isdigit() isdecimal() isnumeric() isspace() isupper() islower()
+    是否为数字或字母、是否为字母、是否为数字字符、空白字符、是否大小写字母
+
+    center() ljust() rjust() zfill()
+    前三个返回指定宽度的新字符串，原字符串居中、左、右对齐
+    zfill返回指定宽度字符串，在左侧以0进行填充
+
+    eval()用来把任意字符串转化为Python表达式并进行求值
+        eval('3+4')
+
+    Python3中将input()的输入一律按字符串对待
+
+    textwrap模块，对字符串进行排版
+
+    字符串常量：string里提供
+    string.digits   string.ascii_letters string.punctuation
+
+

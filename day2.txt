@@ -1,0 +1,118 @@
+序列，字典，集合
+
+一、列表
+
+	（1）.list()
+	列表对象的常用方法
+
+	1.append():将元素添加至列表尾部
+	2.extend(L):将列表L中所有元素添加至列表尾部
+		>>>x=['P', 'y', 't', 'h', 'o', 'n']
+		>>>L=[1,2,3]
+		>>>x.extend(L)
+		>>>x
+		['P', 'y', 't', 'h', 'o', 'n', 1, 2, 3]
+	3.insert(index,x) :在列表index位置插入x，该位置后面所有元素后移，如果index为正数且大于列表长度，则插入到尾部
+	  如果index为负数且小于列表长度的相反数，则插入到头部
+
+	4.pop([index]):删除并返回指定位置上的元素
+	  clear():删除所有元素
+	  remove(x):删除列表中第一个值与指定值相等的元素
+
+	  强调+注意：由于列表具有内存自动收缩和扩张功能，在列表中添加或删除元素时，不仅效率低，该位置后面所有元素的索引都将发生变化
+
+	5.count(x) :返回x在列表中的出现次数
+	  index(x) :返回列表中第一个值为x的元素索引
+
+	6.sort(key=None,reverse=False) :对列表中的元素进行原地排序，key用来指定排序规则，reverse默认为升序
+	  reverse():把所有元素进行逆序
+	  >>>x=list(range(10))
+	  >>>x.sort(key=lambda item:len(str(item)),reverse=True)
+	  >>>x
+	  [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+
+	7.+、× 运算符
+
+		>>>x=[1,2,3]
+		>>>y=[4,5,6]
+		>>>x+y
+		[1, 2, 3, 4, 5, 6]
+		>>>x*2
+		[1, 2, 3, 1, 2, 3] #相当于复制这个列表两次
+
+	8.shuffle(x)：将元素顺序打乱（需要import random）
+
+		>>>x=range(10)
+		>>>import random
+		>>>random.shuffle(x)
+	9. sum(x):求列表元素之和 x表示列表[]
+		len(x)
+		all(x)
+		max(x)
+		min(x)
+		any(x)
+		enumerate(x)
+		map(x)
+		zip(x)
+
+	10.randint() : from random improt randint
+		>>>randint(1,100)   #生成一个1～100之间的整数
+
+		>>>x=[randint(1,100) for i in range(10)]
+
+	11.列表式推导 
+
+		[expresion1 for exp1 in sequence1 if condition1
+					for expN in sequenceN if conditionN
+		]
+		>>>a=[x*x for x in range(10)]
+		[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+	（1）嵌套列表的平铺
+
+		>>>vec=[[1,2,3],[4,5,6],[7,8,9]]
+		>>>[num for elem in vec for num in elem]
+		等价于
+		vec=[[1,2,3],[4,5,6],[7,8,9]]
+		result=[]
+		for elem in vec:
+			for num in elme:
+				result.append(num)
+		>>>result
+		[1,2,3,4,5,6,7,8,9]
+	（2）过滤不符合条件的元素
+
+		score={
+	    'xiao':45,
+	    'li':62,
+	    'kuang':56,
+	    'wu':98,
+	    'tong':78,
+	    'fang':88
+		}
+		highest=max(score.values())
+		lowest=min(score.values())
+		ave=sum(score.values())/len(score)
+		print(highest,lowest,ave)
+		# 可以循环多个变量
+		name=[i for i,j in score.items() if j==highest]
+		print(name,highest)
+	(3)同时遍历多个数组
+
+		>>>[(x,y) for x in [1,2,3] for y in [1,3,4] if x==y]
+
+	12.切片
+
+		[start:end:step] 左闭右开区间
+	
+	tuple
+	
+	当元组只有一个元素时，(1,)逗号不能省略
+
+
+
+
+
+
+
+	
+		

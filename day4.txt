@@ -1,0 +1,80 @@
+程序控制结构
+条件控制：
+    if 表达式：
+        语句
+    ————————————————————————————————————————————————
+    if 表达式：
+        语句
+    else 表达式：
+        语句
+    ————————————————————————————————————————————————
+    if 表达式：
+        语句
+    elif 表达式：
+        语句
+    .
+    .
+    .
+    else：
+        语句
+
+
+循环结构
+
+    while 条件表达式:
+        循环体
+    [else:
+        语句]           #如果循环自然结束，执行else语句，如果是break结束循环，则不执行else语句
+
+    for var in 序列或迭代对象：
+        循环体
+    [else:
+        语句]
+
+    语法优化，在编写循环语句时，应尽量减少循环内部不必要或无关的计算，与循环体无关的变量应尽量提到循环之外
+    尤其是多重循环嵌套时，一定要尽量减少内层循环中不必要的计算
+    import time
+    start=time.time()
+    dict1={1,2,3,4}
+    for i in range(1000):
+        result=[]
+        for i in dict1:
+            for j in dict1:
+                for k in dict1:
+                    result.append(i*100+j*10+k)
+    print('used time:',time.time()-start)
+    print(result)
+    start=time.time()
+    for i in range(1000):
+        result=[]
+        for i in dict1:
+            i*=100
+            for j in dict1:
+                j*=10
+                for k in dict1:
+                    result.append(i+j+k)
+    print("used time 2:",time.time()-start)
+    print(result)
+    _________________________________________
+    used time: 0.028738737106323242
+    [111, 112, 113, 114, 121, 122, ......
+    used time 2: 0.024125337600708008
+    可以看出循环2比循环1执行速度要快些
+
+  1.time
+    time.time() 当前时间截
+    time.localtime() 返回时间对象（年与日时分秒）
+  2.datetime
+    datetime.date.today
+    .....
+  3.calendar
+    calendar.calendar(year)       查看某一年的日历
+    calerdar.moth(2018,4)
+    calendar.isleap(2018) 判断是否为闰年
+    calendr.weekday(2018,4,3)
+    判断一个数是否为素数，只需判断2到sqrt(n)+1所有整数,或者是3到sqrt(n)+1之间的所有奇数
+  4.math
+    factorial(n)   n的阶乘
+  5.isinstance(1,int)  判断1是否是int的实例
+
+  6.itertools 提供了组合函数combinations()，排列函数permutations（）、循环遍历可迭代对象元素的cycle（）、笛卡尔积product()

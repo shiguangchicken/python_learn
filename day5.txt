@@ -1,0 +1,101 @@
+函数
+1.基本语法
+    def 函数名([参数列表])：
+    ‘’‘注释’‘’
+    函数体
+
+    函数值返回类型与return表达式类型一致，不论return出现在什么位置，一旦执行，函数结束
+2.函数嵌套定义
+    def myMap(item,op,value):
+        if op not in '+-*/'
+            return 'error operator'
+        def nested(item):
+            return eval(repr(item)+op+repr(value))
+        return map(nested,iterable)
+3. *号的用法
+
+    def one(a,*b):
+      """a是一个普通传入参数，*b是一个非关键字星号参数"""
+        print(b)
+    one(1,2,3,4,5,6)
+        #--------
+    def two(a=1,**b):
+          """a是一个普通关键字参数，**b是一个关键字双星号参数"""
+          print(b)
+    two(a=1,b=2,c=3,d=4,e=5,f=6)
+
+        #程序输出
+        (2, 3, 4, 5, 6)
+        {'b': 2, 'c': 3, 'e': 5, 'f': 6, 'd': 4}
+
+        #从输出中可以看到，第一个函数中，*b的位置可以传入任意多没有关键字的参数，*b会将这些传入参数转化成一个元组，下面的调用
+        one(1,2,3,4,5,6)
+        #传入one(a,*b)后，等价与
+        one(1,(2,3,4,5,6))
+
+        #第二个函数中，**b的位置可以接收任意多个关键字参数，下面的调用
+        two(a=1,b=2,c=3,d=4,e=5,f=6)
+        #传入one(a,*b)后，等价与
+        two(a=1,{'b': 2, 'c': 3, 'e': 5, 'f': 6, 'd': 4})
+4.修饰器
+    def funA(agg):
+        print('a')
+    @funA
+    def funB():
+        print('b')
+    等价于funA(funB())执行先后是A然后B
+5.参数
+    1 默认参数
+        在定义函数的时候为形参设置默认值
+
+        def fun(...,var=default)
+            segment
+            ....
+        调用可以不赋值，或者显示赋值来替换默认参数的值
+        对于列表、字典这样可变类型的默认参数，默认参数值只在定义时进行一次解释和初始化
+        def demo(item,old_list=[])
+            old_list.append(item)
+            return old_list
+        print(demo('a')) #输出['a']
+        print(demo('b')) #输出['a','b']
+     2.关键参数
+        def demo(a,b,c=5)
+            print(a,b,c)
+        demo(c=8,a=4,b=5)  #关键参数
+    3.可变长度参数
+        def demo(*p)
+            print（p)
+        demo(1,2,3,4)  #(1,2,3，4）无论传入多少参数，放入元组中
+
+        def demo1(**p):
+            for item in p.items():
+                print(item)
+        demo1(x=1,y=2,z=3) #自动将参数转化为字典
+    4.强制函数某些参数必须以关键参数传递
+        位于*parameter或单独一个*之后的所有参数都只能以关键参数传递
+        def demo(a,b,*,c):
+            print(a+b+c)
+        demo(1,2,c=3) #c必须以关键参数传递
+    5.传递参数时的序列解包
+        def demo(a,b,c):
+            print(a,b,c)
+         seq=[1,2,3]
+         demo(*seq)  #使用*解包
+
+        p={'a':1,'b':2,'c':3}
+        def f(a,b,c=5):
+            print(a,b,c)
+        f(**p)      #对字典解包  1 2 3
+    6.标注函数参数与返回值类型
+        def test(x:int,y:int)->int:
+            assert isinstance(x,int),'x must an integer'
+            assert isinstance(y,int),'y must an integer'
+            z=x+y
+            assert isinstance(z,int),'z must an integer'
+            return z
+
+        真正起作用的是assert
+    7.变量的作用域
+        在函数内部定义的变量为局部变量，外部定义的变量为全局变量
+        （1）如果一个变量已经在函数外定义，想用函数修改这个变量值并反应到函数外，则用global
+        （2）在函数内直接使用global声明变量为全局变量，如果外部没有该变量，则创建新的全局变量

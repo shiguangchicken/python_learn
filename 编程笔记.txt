@@ -1,0 +1,5 @@
+	1.char.islower
+		判断大小写 isupper() islower()
+		'a'.isupper()  False
+	2.对一个序列逆序
+		list[n::-1]
