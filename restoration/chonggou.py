@@ -1,6 +1,9 @@
 import numpy as np
 from pythonds3.graphs import Graph,Vertex
 from pythonds3.basic import Queue
+from myProj.mypso import pso
+from pyswarms.discrete import BinaryPSO
+from matplotlib import pyplot as plt
 import sys
 
 fault_zone = 1
@@ -9,6 +12,14 @@ bczs = [[1, -1, -1, -1], [1, -1, 1], [-1, -1, 1, -1], [1, 1], [-1, 1, -1, -1], [
         [1, 1]]  # the breaks connect to zone value 1 or -1
 # break_status=[1,1,1,1,0,1,1,0,0,1,1,1,1,0,1,1,1,1]
 break_status = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+loads=np.array([[2,4,6,11,13,15],
+               [2,20,2,2,20,2],
+               [1,2,1,1,2,1]])   # the first row is the breaker, second row is the load capacity, 3rd row is the load priority
+
+gens=np.array([[1,7,10,16],
+               [36, 4, 34, 4]])
+
 szone = np.zeros([8, 18])
 for i in range(len(szone)):
     for j, k in zip(bcz[i], bczs[i]):
@@ -91,6 +102,74 @@ def search_zone(zone_balance,fault_zone):
     return  z[index],z[sums[max]],max
 
 
+##pso
+def load_shedding():
+    lb = np.zeros(len(brk_load))
+    ub = np.ones(len(brk_load))
+    xopt, fopt = pso(fun1, lb, ub, ieqcons=[constraints])
+    break_change = []
+    print(xopt, old_brk_status)
+    for i in range(len(xopt)):
+        if xopt[i] != old_brk_status[i]:
+            break_change.append(brk_load[i])
+    return break_change,fopt
+
+def test_pso():
+    #before running
+    # old_brk_sttus=[break_status[i - 1] for i in loads[0]]
+    args=(1,0)
+    lb = np.zeros(len(brk_load))
+    ub = np.ones(len(brk_load))
+    xopt, fopt = pso(fun2, lb, ub, ieqcons=[constraints],args=args)
+    break_change=[]
+    print(xopt,old_brk_status)
+    for i in range(len(xopt)):
+        if xopt[i]!=old_brk_status[i]:
+            break_change.append(brk_load[i])
+    print("the break {} should  open \n".format(break_change),"the total load power is:",fopt)
+
+def cal_pgen():
+    '''
+
+    :return: the the generator power: pgen,
+    brk_load: the break of the load connected
+    load_in: the loads that the system has
+    pl: priority * load
+    '''
+    brk_gen = np.array([break_status[i - 1] for i in gens[0]])
+    pgen=brk_gen.dot(gens[1])
+    brk_load =[]
+    load_in=[]
+    old_brk_status=[]
+    pl=[]
+    for i,j,k in zip(loads[0],loads[1],loads[2]):
+        if break_status[i-1]==1:
+            brk_load.append(i)
+            load_in.append(j)
+            old_brk_status.append(break_status[i-1])
+            pl.append(j*k)
+
+    return pgen,np.array(brk_load),np.array(load_in),old_brk_status,np.array(pl)
+
+def fun1(x):
+    x=np.array(x)
+    return x.dot(load_in.T)
+def fun2(x,*args):
+    x=np.array(x)
+    w1,w2=args
+    return w1*x.dot(load_in.T)+w2*x.dot(pl.T)
+
+def constraints(x,*args):
+    # x=np.array(x)
+    # gen_cap = gens[1]
+    # p_gen = x.dot(gen_cap.T)
+    w1,w2=args
+    return [pgen-fun1(x)]
+
+
+
+
+
 def function():
     # break_flow=np.array([23,2,20,20,0,2,2,0,0,22,2,20,20,0,2,1,-1,1])
     zone_balance=update_szone(fault_zone,bcz,szone)
@@ -101,4 +180,5 @@ def function():
 ################# run ##########
 function()
 ################################
-
+pgen,brk_load,load_in,old_brk_status,pl=cal_pgen()
+test_pso()
