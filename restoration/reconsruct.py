@@ -1,5 +1,6 @@
 from myProj.mypso import pso
 import numpy as np
+import matplotlib.pyplot as plt
 # from pythonds3.graphs import Graph,Vertex
 from myProj.Myadjacency_graph import Graph
 class Recons:
@@ -40,8 +41,8 @@ class Recons:
 
     def __brkstatus_init(self):
         '''初始化开关状态，4,12,22未连接'''
-        # a=[4,12,22];
-        a=[2,22,19,23];
+        a=[4,12,22];
+        # a=[2,22,19,23];
         for i in a:
             self.break_status[1][i-1]=0
 
@@ -53,16 +54,17 @@ class Recons:
         self.__brkstatus_init()
         self.load_brk=self._getloadbreak()
         self.gen_brk=self._getgenbreak()
-        self.fault_zone=None
+        self.fault_zone=[]
         self.cons=cons
         self.bus_brk = bus_brk
+        self.draw=Draw()
 
     def set_fault(self,fault_zone):
         '''
         :param fault_zone: 短路节点，改变相应节点所连接的开关状态 ，输入：bus1  bus2   bus3.......
         :return:
         '''
-        self.fault_zone=fault_zone
+        self.fault_zone.append(fault_zone)
         for i in bcz[fault_zone]:
             self.break_status[1][i-1]=0
         self.gen_brk=self._getgenbreak()
@@ -81,11 +83,12 @@ class Recons:
         pgen = self.gen_brk[1].dot(gens[1].T)
         brk_load = []
         d=[]
-        for i in bcz[self.fault_zone]:
-            for j in range(len(loads[0])):
-                if i==loads[0][j]:
-                    d.append(j)
-                    break
+        for fz in self.fault_zone:
+            for i in bcz[fz]:
+                for j in range(len(loads[0])):
+                    if i==loads[0][j]:
+                        d.append(j)
+                        break
         load_in=np.delete(loads,d,1)
         return pgen,load_in
 
@@ -136,7 +139,7 @@ class Recons:
         '''
         g = Graph()
         for i in bcz.keys():
-            if i != self.fault_zone:
+            if i not in self.fault_zone:
                 g.set_vertex(str(i))
         for i,j in zip(bus_brk,cons):
             if (len(i)==1) and (self.break_status[1][i[0]-1]==1):
@@ -161,6 +164,7 @@ class Recons:
                         g.add_edge(j[2], j[1])
         return g
 
+
     def serch_path(self):
         '''
         改变除故障处外未接入的开关状态
@@ -168,14 +172,15 @@ class Recons:
         :return:
         '''
         start='bus1' #从哪一个节点bfs
-        if start==self.fault_zone:
-            start=='bus2'
-        for i in self.bcz.keys():
-            if i!=self.fault_zone:
-                for j in self.bcz[self.fault_zone]:
-                    if j in self.bcz[i]:
-                        bcz[i].remove(j)
-        del self.bcz[self.fault_zone]
+        if start in self.fault_zone:
+            start='bus2'
+        for fz in self.fault_zone:
+            for i in self.bcz.keys():
+                if i!=fz:
+                    for j in self.bcz[fz]:
+                        if j in self.bcz[i]:
+                            bcz[i].remove(j)
+            del self.bcz[fz]
         brk_changes=[]
         cc =set() #未接入的开关序号
         ##找到未接入的开关编号
@@ -198,6 +203,7 @@ class Recons:
             g.bfs(g.get_vertex(start))
             if g.is_allcon() and g.is_radial():
                 brk_changes.append([list(cc),cc_status])
+                self.draw.drawGraph(g,self.fault_zone)
         return brk_changes
 
 
@@ -214,6 +220,36 @@ class Recons:
             self.con[i].remove(self.fault_zone)
         del self.con[self.fault_zone]
 
+
+class Draw:
+    def __init__(self):
+        self.points={'bus1':[1,2],'bus2':[2,2],'bus3':[3,2],'bus4':[4,2],'bus5':[2,3],'bus6':[2,1],
+                     'bus7':[3,3],'bus8':[3,1],'bus9':[4,3],'bus10':[4,1]}
+    def con2point(self,bus1,bus2):
+        x=[self.points[bus1][0],self.points[bus2][0]]
+        y=[self.points[bus1][1],self.points[bus2][1]]
+        plt.plot(x,y,color='b')
+    def drawPoint(self,*fault):
+        print(fault)
+        x=[]
+        y=[]
+        xf=[]
+        yf=[]
+        for pointkey in self.points.keys():
+            if pointkey in fault:
+                xf.append(self.points[pointkey][0])
+                yf.append(self.points[pointkey][1])
+            else:
+                x.append(self.points[pointkey][0])
+                y.append(self.points[pointkey][1])
+        plt.scatter(x,y,color='#6A5ACD')
+        plt.scatter(xf,yf,color='r')
+
+    def drawGraph(self, g,fault_zone):
+        plt.figure()
+        self.drawPoint(*fault_zone)
+        for edge in g.get_edges():
+            self.con2point(edge[0],edge[1])
 
 
 
@@ -248,10 +284,12 @@ cons=[['bus1','bus5'],
       ]
 
 testrecon= Recons(bcz,break_status,loads,gens,bus_brk,cons)
-testrecon.set_fault('bus10')
+# testrecon.set_fault('bus5')
+testrecon.set_fault('bus8')
 # print(testrecon.break_status)
 # g=testrecon.build_graph(bus_brk,cons)
 # g.bfs(g.get_vertex('bus2'))
-
+testrecon.binary_pso(iw1=1,iw2=0)
 print(testrecon.serch_path())
-# testrecon.binary_pso(iw1=0.1,iw2=0.9)
+plt.show()
+
